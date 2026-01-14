@@ -4,6 +4,8 @@
 #include<fstream>
 #include<cstring>
 #include<iomanip>
+
+#define Document_path "E:\\Project\\Simple_Library_Administration_System\\Library Imformation database.txt"
 using namespace std;
 class Book{     /*定义书的类*/
     public:
@@ -27,6 +29,7 @@ int main(){
         booklist[i].Author[0]='\0';
         booklist[i].Amount=0;
     }
+    GetData();      //从数据文件中读取图书信息
     for(;;){
         MainMenu();     //显示主菜单
         char ch;
@@ -60,7 +63,7 @@ int main(){
     return 0;
 }
 void GetData(){
-    ifstream ifile("E:\\C++\\Homework coding\\Simple Library adminstratoin System\\Library Imformation database.txt");  //数据库路径需根据文件实际路径进行修改
+    ifstream ifile(Document_path);  //数据库路径需根据文件实际路径进行修改
     char a[35],number[5];       //number用来暂存数量字符
     int i=0,j=0,k=0;        //i 遍历书本，j 遍历书名字符串，k遍历作者字符串
     while(ifile.get(a[i])){     //读取提示符，不计入数组，用a来临时存储
@@ -138,8 +141,6 @@ void MainMenu(){        /*显示主菜单界面*/
 }
 void SearchBook(){      /*查询模块*/
     
-    //将书库信息读入数组
-    GetData();
     for(;;){        //可以连续查询多次
         //输入待查询书名bookName;
         cout<<"请输入查询书名:"<<endl;
@@ -167,8 +168,6 @@ void SearchBook(){      /*查询模块*/
     MainMenu();     //显示主菜单
 }
 void BorrowBook(){      /*借阅模块*/
-    //读取书库信息
-    GetData();
 	if(booklist[0].Name[0]=='\0')     //库中无书
         cout<<"库中无图书，暂不能借阅！";
 	else{    //库中有书
@@ -201,22 +200,11 @@ void BorrowBook(){      /*借阅模块*/
 			if(ch=='n'||ch=='N')
                 break;
 		}
-       //更新书库信息
-        ofstream ofile("E:\\C++\\Homework coding\\Simple Library adminstratoin System\\Library Imformation database.txt");  //数据库路径需根据文件实际路径进行修改
-        ofile<<"序号,书名,作者,在馆数量"<<endl;    //写入提示符
-        for(int i=0;i<20;i++){
-            if(booklist[i].Name[0]=='\0')    //跳出循环条件
-                break;
-            ofile<<i+1<<":"<<booklist[i].Name<<",";
-            ofile<<booklist[i].Author<<";";
-            ofile<<booklist[i].Amount<<endl;
-        }
-        ofile.close();
 	}
 }
 void ReturnBook(){          /*还书模块*/
     //读取书库信息
-    GetData();
+    //GetData();
     for(;;){         //可重复还书
 		//输入待还书名bookName;
         cout<<"请输入还书书名:"<<endl;
@@ -241,21 +229,10 @@ void ReturnBook(){          /*还书模块*/
 		if(ch=='n'||ch=='N')
             break;
 	}
-    //更新书库信息
-    ofstream ofile("E:\\C++\\Homework coding\\Simple Library adminstratoin System\\Library Imformation database.txt");  //数据库路径需根据文件实际路径进行修改
-    ofile<<"序号,书名,作者,在馆数量"<<endl;    //写入提示符
-    for(int i=0;i<20;i++){
-        if(booklist[i].Name[0]=='\0')    //跳出循环条件
-            break;
-        ofile<<i+1<<":"<<booklist[i].Name<<",";
-        ofile<<booklist[i].Author<<";";
-        ofile<<booklist[i].Amount<<endl;
-    }
-    ofile.close();
 }
 void ListShow(){            /*浏览模块*/
     //读取书库信息
-    GetData();
+    //GetData();
     if(booklist[0].Name[0]=='\0'){     //库中无书
         cout<<"库中无图书!"<<endl;
         return;
@@ -297,7 +274,7 @@ void ManageBook(){     /*管理模块*/
 	else{    //进入管理
         cout<<"口令正确，欢迎进入图书管理模块！"<<endl;
        //读出书库信息
-        GetData();
+        //GetData();
 		for(;;){     //可连续添加多种图书
 			//输入添加图书的书名Name、作者Author、在库数量amount;
             cout<<"请输入添加图书的书名:"<<endl;
@@ -338,22 +315,12 @@ void ManageBook(){     /*管理模块*/
 			if(ch=='n'||ch=='N')
                 break;
 		}
-        //更新图书库信息
-        ofstream ofile("E:\\C++\\Homework coding\\Simple Library adminstratoin System\\Library Imformation database.txt");  //数据库路径需根据文件实际路径进行修改
-        ofile<<"序号,书名,作者,在馆数量"<<endl;    //写入提示符
-        for(int i=0;i<20;i++){
-            if(booklist[i].Name[0]=='\0')    //跳出循环条件
-                break;
-            ofile<<i+1<<":"<<booklist[i].Name<<",";
-            ofile<<booklist[i].Author<<";";
-            ofile<<booklist[i].Amount<<endl;
-        }   
 	}
 }
 void Quit(){                /*退出模块*/
     cout<<"感谢使用图书管理系统，祝您生活愉快！"<<endl;
     //更新图书库信息
-    ofstream ofile("E:\\C++\\Homework coding\\Simple Library adminstratoin System\\Library Imformation database.txt");  //数据库路径需根据文件实际路径进行修改
+    ofstream ofile(Document_path);  //数据库路径需根据文件实际路径进行修改+
     ofile<<"序号,书名,作者,在馆数量"<<endl;    //写入提示符
     for(int i=0;i<20;i++){
         if(booklist[i].Name[0]=='\0')    //跳出循环条件
